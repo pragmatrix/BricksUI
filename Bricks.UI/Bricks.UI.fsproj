@@ -73,7 +73,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bricks\Bricks.fsproj">
+    <ProjectReference Include="..\bricks\Bricks\Bricks.fsproj">
       <Name>Bricks</Name>
       <Project>{7ee1b04f-cb1f-48d3-9f28-af91eb2c20d4}</Project>
       <Private>True</Private>
