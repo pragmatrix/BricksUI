@@ -1,0 +1,10 @@
+/packages/
+!/packages/repositories.conf
+bin/
+obj/
+*.suo
+*.ncrunchsolution
+*.ncrunchproject
+*.user
+_NCrunch_*/
+
