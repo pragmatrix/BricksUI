@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6A47C2
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Bricks.UI.Tests", "Bricks.UI.Tests\Bricks.UI.Tests.fsproj", "{C264A5AF-3CEE-4BFD-A7D1-D554E0F69975}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Bricks.IDE", "Bricks.IDE\Bricks.IDE.fsproj", "{FC6EF1CB-2D85-4FEF-B5AC-7742180C273B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{C264A5AF-3CEE-4BFD-A7D1-D554E0F69975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C264A5AF-3CEE-4BFD-A7D1-D554E0F69975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C264A5AF-3CEE-4BFD-A7D1-D554E0F69975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC6EF1CB-2D85-4FEF-B5AC-7742180C273B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC6EF1CB-2D85-4FEF-B5AC-7742180C273B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC6EF1CB-2D85-4FEF-B5AC-7742180C273B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC6EF1CB-2D85-4FEF-B5AC-7742180C273B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
