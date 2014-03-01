@@ -2,27 +2,44 @@
 
 open Bricks
 open BricksUI
+open BricksHost
 open OpenTK
+open System.Windows.Forms
+open System.Diagnostics
 
-type _Window(w: Window) as this = 
-    inherit GameWindow()
+type _Window(model: Window, host: ProgramHost) as this = 
+    inherit GameWindow(model.width, model.height)
+    let mutable model = model
     do
-        this.Width <- w.width
-        this.Height <- w.height
-        this.Title <- w.title
+        this.Width <- model.width
+        this.Height <- model.height
+        // this. <- model.title
 
     member this.update(u: Window) =
+        model <- u
         this.Width <- u.width
         this.Height <- u.height
-        this.Title <- u.title
+        // this.Title <- u.title
         this
 
-    static member projector() = IdSet.Projector(
+    override this.OnClosing args =
+        args.Cancel <- true
+        base.OnClosing args
+        host.dispatch model CloseWindow
+
+    static member projector(host: ProgramHost) = IdSet.Projector(
         (Window.identify),
         (fun w -> 
-            let w = new _Window(w)
-            w.Visible <- true
-            w
+            let _w = new _Window(w, host)
+            _w.Visible <- true
+            host.activate w (w.eventHandler)
+            _w
             ),
-        (fun w _w -> _w.update w),
-        (fun w _w -> _w.Dispose()))
+        (fun w _w -> 
+            let r = _w.update w
+            host.activate w (w.eventHandler)
+            r
+            ),
+        (fun w _w -> 
+            host.deactivate w
+            _w.Dispose()))
