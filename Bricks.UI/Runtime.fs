@@ -19,7 +19,6 @@ let run (application:Application brick) =
     let p = program {
         let! windowChanges = windowChanges
         windowChanges |> windowProjector.project
-        collect
         if windowProjector.empty then
             Forms.Application.Exit()
     }

@@ -27,19 +27,20 @@ type _Window(model: Window, host: ProgramHost) as this =
         base.OnClosing args
         host.dispatch model CloseWindow
 
-    static member projector(host: ProgramHost) = IdSet.Projector(
-        (Window.identify),
-        (fun w -> 
-            let _w = new _Window(w, host)
-            _w.Visible <- true
-            host.activate w (w.eventHandler)
-            _w
-            ),
-        (fun w _w -> 
-            let r = _w.update w
-            host.activate w (w.eventHandler)
-            r
-            ),
-        (fun w _w -> 
-            host.deactivate w
-            _w.Dispose()))
+    static member projector(host: ProgramHost) = 
+        IdSet.Projector(
+            (Window.identify),
+            (fun w -> 
+                let _w = new _Window(w, host)
+                _w.Visible <- true
+                host.activate w (w.eventHandler)
+                _w
+                ),
+            (fun w _w -> 
+                let r = _w.update w
+                host.activate w (w.eventHandler)
+                r
+                ),
+            (fun w _w -> 
+                host.deactivate w
+                _w.Dispose()))
