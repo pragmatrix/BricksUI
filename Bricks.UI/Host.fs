@@ -8,7 +8,6 @@ type EventHandler<'e> = 'e -> Transaction
 
 type ProgramHost() =
     let mutable _activeHandlers: HashMap<obj, obj -> Transaction> = HashMap.Empty
-    let mutable _programM: ProgramM option = None
     let mutable _program: Program option = None
 
     member this.activate host eventHandler =
@@ -25,10 +24,10 @@ type ProgramHost() =
         | None -> ()
         | Some handler -> 
             let transaction = handler event
-            let applyTransaction = program { apply transaction }
-            // we apply the transaction & the program loop
-            _program <- _program.Value |> (applyTransaction >> _programM.Value) |> Some
+            // run the transaction and the program
+            transaction ()
+            _program.Value.run()
 
-    member this.run programM =
-        _programM <- Some programM
-        _program <- programM Program.empty |> Some
+    member this.run program =
+        _program <- Some program
+        program.run()
