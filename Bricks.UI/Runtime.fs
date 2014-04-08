@@ -17,8 +17,8 @@ let run (application:Application brick) =
     let windowProjector = _Window.projector host
 
     let p = program {
-        let! windowChanges = windowChanges
-        windowChanges |> windowProjector.project
+        let! wc = windowChanges
+        do! wc |> windowProjector.project
         if windowProjector.empty then
             Forms.Application.Exit()
     }
