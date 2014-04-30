@@ -66,19 +66,23 @@ let makeSurface box =
             | TextBox tb -> makeTextBoxSurface tb
     }
 
-type _Window(ec: EvaluationContext, model: Window, host: ProgramHost) as this = 
+type _Window(model: Window, host: ProgramHost) as this = 
     inherit GameWindow(model.width, model.height)
     let mutable model = model
     do
-        this.Width <- model.width
-        this.Height <- model.height
-        this.Title <- model.title
+        this.update(model) |> ignore
 
-    member this.update(ec: EvaluationContext, u: Window) =
+    interface IDisposable with
+        member this.Dispose() = 
+            host.deactivate this
+            base.Dispose()
+
+    member this.update(u: Window) =
         model <- u
         this.Width <- u.width
         this.Height <- u.height
         this.Title <- u.title
+        host.activate this model.eventHandler
         this
 
     override this.OnResize args = 
@@ -98,22 +102,4 @@ type _Window(ec: EvaluationContext, model: Window, host: ProgramHost) as this =
     override this.OnClosing args =
         args.Cancel <- true
         base.OnClosing args
-        host.dispatch model CloseWindow
-
-    static member projector(host: ProgramHost) = 
-        IdSet.Projector(
-            (Window.identify),
-            (fun ec w -> 
-                let _w = new _Window(ec, w, host)
-                _w.Visible <- true
-                host.activate w (w.eventHandler)
-                _w
-                ),
-            (fun ec w _w -> 
-                let r = _w.update(ec, w)
-                host.activate w (w.eventHandler)
-                r
-                ),
-            (fun ec w _w -> 
-                host.deactivate w
-                _w.Dispose()))
+        host.dispatch this CloseWindow

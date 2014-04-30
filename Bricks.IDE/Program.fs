@@ -13,8 +13,7 @@ let helloWorld = brick {
 
 let myWindowVisible = value true
 
-let myWindow = {
-    Window.id = "1"; 
+let myWindow = value {
     title = "Bricks IDE"; 
     width = 800; height = 600;
     content = helloWorld;
@@ -22,9 +21,7 @@ let myWindow = {
         match ev with
         | CloseWindow ->
             transaction { write myWindowVisible false }
-    }
-
-
+    } 
 
 let allWindows = brick {
         let! visible = myWindowVisible
@@ -32,8 +29,9 @@ let allWindows = brick {
     }
 
 let application = brick {
-    
+    let! w = allWindows
+    return { Application.windows = w |> Set.ofSeq }
 }
 
-run myApplication
+run application
 

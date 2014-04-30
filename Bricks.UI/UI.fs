@@ -33,11 +33,12 @@ type Box =
 
 type WindowEvent = | CloseWindow
 
-type Window = { id: obj; title:string; width: int; height: int; content: Box brick; eventHandler: EventHandler<WindowEvent> }
+type Window = { title:string; width: int; height: int; content: Box brick; eventHandler: EventHandler<WindowEvent> }
+(*    
     with
     static member identify = fun w -> w.id
     static member makeSet windows = windows |> IdSet.fromSeq Window.identify   
+*)
 
-
-type Application = { windows: Window idset }
+type Application = { windows: Window brick set }
 

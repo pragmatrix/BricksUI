@@ -10,17 +10,17 @@ type ProgramHost() =
     let mutable _activeHandlers: HashMap<obj, obj -> Transaction> = HashMap.Empty
     let mutable _program: Program option = None
 
-    member this.activate host eventHandler =
-        _activeHandlers <- _activeHandlers.SetItem(host, unbox >> eventHandler)
+    member this.activate eventHost eventHandler =
+        _activeHandlers <- _activeHandlers.SetItem(eventHost, unbox >> eventHandler)
 
-    member this.deactivate host = 
-        _activeHandlers <- _activeHandlers.Remove host
+    member this.deactivate eventHost = 
+        _activeHandlers <- _activeHandlers.Remove eventHost
 
-    member this.get host =
-        _activeHandlers.get host
+    member this.get eventHost =
+        _activeHandlers.get eventHost
 
-    member this.dispatch host event = 
-        match this.get host with
+    member this.dispatch eventHost event = 
+        match this.get eventHost with
         | None -> ()
         | Some handler -> 
             let transaction = handler event
