@@ -74,7 +74,6 @@ type _Window(model: Window, host: ProgramHost) as this =
 
     interface IDisposable with
         member this.Dispose() = 
-            host.deactivate this
             base.Dispose()
 
     member this.update(u: Window) =
@@ -82,7 +81,6 @@ type _Window(model: Window, host: ProgramHost) as this =
         this.Width <- u.width
         this.Height <- u.height
         this.Title <- u.title
-        host.activate this model.eventHandler
         this
 
     override this.OnResize args = 
@@ -102,4 +100,4 @@ type _Window(model: Window, host: ProgramHost) as this =
     override this.OnClosing args =
         args.Cancel <- true
         base.OnClosing args
-        host.dispatch this CloseWindow
+        host.dispatch model.eventHandler CloseWindow

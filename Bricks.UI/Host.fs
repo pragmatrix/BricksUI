@@ -6,27 +6,20 @@ type EventHandler = interface end
 
 type EventHandler<'e> = 'e -> Transaction
 
-type ProgramHost() =
+type ProgramHost = 
+    abstract member dispatch : ('e -> Transaction) -> 'e -> unit
+
+type ProgramHost<'v>() =
     let mutable _activeHandlers: HashMap<obj, obj -> Transaction> = HashMap.Empty
-    let mutable _program: Program option = None
+    let mutable _program: Program<'v> option = None
 
-    member this.activate eventHost eventHandler =
-        _activeHandlers <- _activeHandlers.SetItem(eventHost, unbox >> eventHandler)
+    interface ProgramHost with
 
-    member this.deactivate eventHost = 
-        _activeHandlers <- _activeHandlers.Remove eventHost
-
-    member this.get eventHost =
-        _activeHandlers.get eventHost
-
-    member this.dispatch eventHost event = 
-        match this.get eventHost with
-        | None -> ()
-        | Some handler -> 
+        member this.dispatch handler event = 
             let transaction = handler event
             // run the transaction and the program
             transaction ()
-            _program.Value.run()
+            _program.Value.run() |> ignore
 
     member this.run program =
         _program <- Some program

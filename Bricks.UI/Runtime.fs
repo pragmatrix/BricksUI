@@ -13,7 +13,7 @@ let run (application:Application brick) =
 
     let windows = application |> convert (fun app -> app.windows)
 
-    let host = ProgramHost()
+    let host = ProgramHost<_>()
 
     let windowMapper w =
         brick {
@@ -26,16 +26,15 @@ let run (application:Application brick) =
  
     // tbd: the seq of windows may be a brick -> program can be converted to a brick
  
-    let actualWindows = ref List.empty;
-
-    let p = program {
+    let rootBrick = brick {
         let! windows = systemWindows
         let! realized = windows
-        actualWindows := realized |> Seq.toList
+        return realized |> Seq.toList
     }
 
-    host.run p
-    let windows = !actualWindows
+    let program = rootBrick |> toProgram
+
+    let windows = host.run program
     if windows.Count() = 0 then () else
     let mainWindow = windows.First()
     mainWindow.Run(30.0, 0.0)
