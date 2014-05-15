@@ -90,10 +90,27 @@ type _Window(model: Window, host: ProgramHost) as this =
         GL.Ortho(r.Left |> float, r.Right |> float, r.Bottom |> float, r.Top |> float, -1.0, 1.0)
         GL.Viewport(r.Size)
 
+        GL.Disable(EnableCap.DepthTest)
+
+        GL.Enable(EnableCap.Blend)
+        GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha)
+        GL.AlphaFunc(AlphaFunction.Greater, 0.f)
+
+
     override this.OnRenderFrame args =
-        GL.Clear(ClearBufferMask.ColorBufferBit ||| ClearBufferMask.DepthBufferBit)
+        GL.ClearColor(0.f, 0.f, 0.f, 0.f);
+        GL.Clear(ClearBufferMask.ColorBufferBit (* ||| ClearBufferMask.DepthBufferBit *))
         GL.MatrixMode(MatrixMode.Modelview)
         GL.LoadIdentity()
+
+
+        GL.Begin PrimitiveType.Polygon
+        GL.Color4(1.f, 1.f, 1.f, 0.5f)
+        GL.Vertex3(100., 10., 0.)
+        GL.Vertex3(10., 10., 0.)
+        GL.Vertex3(100., 100., 0.)
+        GL.End()
+
 
         this.SwapBuffers()
 

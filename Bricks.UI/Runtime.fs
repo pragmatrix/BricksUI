@@ -25,6 +25,7 @@ let run (application:Application brick) =
     let systemWindows = windows |> b.track |> b.map windowMapper |> b.materialize
  
     // tbd: the seq of windows may be a brick -> program can be converted to a brick
+
  
     let rootBrick = brick {
         let! windows = systemWindows
