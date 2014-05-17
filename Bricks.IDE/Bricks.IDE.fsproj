@@ -21,13 +21,14 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <Tailcalls>false</Tailcalls>
+    <Tailcalls>true</Tailcalls>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>bin\Debug\Bricks.IDE.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <OtherFlags>--warnon:1182</OtherFlags>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
