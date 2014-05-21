@@ -1,7 +1,6 @@
 ﻿module BricksUIRuntime
 
 open Bricks
-open BrickTime
 open BricksHost
 open BricksUI
 open BricksUIOpenTK
@@ -22,11 +21,8 @@ let run (application:Application brick) =
             return sysw.update(w)
         }
 
-    let systemWindows = windows |> b.track |> b.map windowMapper |> b.materialize
- 
-    // tbd: the seq of windows may be a brick -> program can be converted to a brick
-
- 
+    let systemWindows = windows |> track |> map windowMapper |> materialize
+     
     let rootBrick = brick {
         let! windows = systemWindows
         let! realized = windows

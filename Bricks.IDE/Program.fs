@@ -1,17 +1,29 @@
 ﻿module BricksIDE
 
 open Bricks
-open BrickCollections
 open BricksUI
 open BricksUIRuntime
 
+open System.Drawing;
+
 let textStyle = { fontName = "Lucida console"; size = 14.; color = Color.formRGB(1., 1., 1.) }
 
-let lines = Channel.source<string List.change>()
+let lines = Channel.source<string IList.change>()
+
+let mkTextBox text = brick {
+        return TextBox { style = textStyle; text = text }
+    }
+
+let textBoxes = lines |> map mkTextBox
+
+let sizes = textBoxes |> map (lift sizeOf) |> materialize
+
+let positions = sizes |> scan (lift (fun pos (sz:SizeF) -> pos + sz.Height)) (lift (float32(0)))
 
 let helloWorld = brick {
         return TextBox { style = textStyle; text = "Hello World!"}
         }
+
 
 let myWindowVisible = value true
 
@@ -32,7 +44,7 @@ let allWindows = brick {
 
 let application = brick {
     let! w = allWindows
-    return { Application.windows = w |> Set.ofSeq }
+    return { Application.windows = w |> ISet.ofSeq }
 }
 
 run application

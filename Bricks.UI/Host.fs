@@ -10,8 +10,8 @@ type ProgramHost =
     abstract member dispatch : ('e -> Transaction) -> 'e -> unit
 
 type ProgramHost<'v>() =
-    let mutable _activeHandlers: HashMap<obj, obj -> Transaction> = HashMap.Empty
-    let mutable _program: Program<'v> option = None
+    let mutable _activeHandlers: IMap<obj, obj -> Transaction> = IMap.Empty
+    let mutable _program: 'v program option = None
 
     interface ProgramHost with
 

@@ -55,6 +55,7 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ItemGroup>
     <Compile Include="Host.fs" />
+    <Compile Include="Layout.fs" />
     <Compile Include="UI.fs" />
     <Compile Include="OpenTK.fs" />
     <Compile Include="Runtime.fs" />

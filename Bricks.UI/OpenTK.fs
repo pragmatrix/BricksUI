@@ -20,11 +20,8 @@ type Size = SizeF
 
 type Surface = { background: Texture; size: Size; content: Surface bricks }
 
-let private measureBitmap = new Bitmap(1, 1)
 
-let bitmapSizeOfText font text = 
-    use graphics = Graphics.FromImage(measureBitmap)
-    graphics.MeasureString(text, font)
+
 
 let private make8BitComponent f = Math.Max(255., f * 256.) |> int
 
@@ -55,7 +52,7 @@ let makeTextBoxSurface (text : Text) =
     GL.TexParameter(target, TextureParameterName.TextureMagFilter, TextureMagFilter.Linear |> int)
     GL.TexParameter(target, TextureParameterName.TextureMinFilter, TextureMinFilter.Linear |> int)
     GL.TexImage2D(target, 0, PixelInternalFormat.Rgba, bitmapWidth, bitmapHeight, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bytes)
-    let surfaceSize = Size(bitmapWidth |> float32, bitmapHeight |> float32 )
+    // let surfaceSize = Size(bitmapWidth |> float32, bitmapHeight |> float32 )
     { background = { id = texture; width = bitmapWidth; height = bitmapHeight }; size = size ; content = Seq.empty }
 
 let makeSurface box = 
@@ -83,7 +80,7 @@ type _Window(model: Window, host: ProgramHost) as this =
         this.Title <- u.title
         this
 
-    override this.OnResize args = 
+    override this.OnResize _ = 
         GL.MatrixMode(MatrixMode.Projection)
         GL.LoadIdentity();
         let r = this.ClientRectangle
@@ -97,7 +94,7 @@ type _Window(model: Window, host: ProgramHost) as this =
         GL.AlphaFunc(AlphaFunction.Greater, 0.f)
 
 
-    override this.OnRenderFrame args =
+    override this.OnRenderFrame _ =
         GL.ClearColor(0.f, 0.f, 0.f, 0.f);
         GL.Clear(ClearBufferMask.ColorBufferBit (* ||| ClearBufferMask.DepthBufferBit *))
         GL.MatrixMode(MatrixMode.Modelview)
