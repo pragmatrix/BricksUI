@@ -16,7 +16,7 @@ let mkTextBox text = brick {
 
 let textBoxes = lines |> map mkTextBox
 
-let sizes = textBoxes |> map (lift sizeOf) |> materialize
+let sizes = textBoxes |> map (lift sizeOf)
 
 let positions = sizes |> scan (lift (fun pos (sz:SizeF) -> pos + sz.Height)) (lift (float32(0)))
 
