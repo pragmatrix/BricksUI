@@ -20,7 +20,7 @@ let run (application:Application brick) =
             let! sysw = manifest (fun () -> new _Window(w, host))
             return sysw.update(w)
         }
-
+        
     let systemWindows = windows |> track |> map windowMapper |> materialize
      
     let rootBrick = brick {

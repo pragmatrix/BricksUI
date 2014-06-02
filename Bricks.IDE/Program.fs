@@ -4,8 +4,6 @@ open Bricks
 open BricksUI
 open BricksUIRuntime
 
-open System.Drawing;
-
 let textStyle = { fontName = "Lucida console"; size = 14.; color = Color.formRGB(1., 1., 1.) }
 
 let lines = Channel.source<string IList.change>()
@@ -18,7 +16,15 @@ let textBoxes = lines |> map mkTextBox
 
 let sizes = textBoxes |> map (lift sizeOf)
 
-let positions = sizes |> scan (lift (fun pos (sz:SizeF) -> pos + sz.Height)) (lift (float32(0)))
+let alignBottom (r:Rect) (sz:Size) = Rect(0., r.bottom, sz.width, sz.height)
+
+let rectangles = sizes |> scan (lift alignBottom) (lift (Rect()))
+
+let zipped = zip rectangles (textBoxes |> materialize)
+
+let textContainer = convert Container zipped
+
+// let textContainer = Container <| zip rectangles textBoxes
 
 let helloWorld = brick {
         return TextBox { style = textStyle; text = "Hello World!"}

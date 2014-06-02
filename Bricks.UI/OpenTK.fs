@@ -29,8 +29,8 @@ let makeTextBoxSurface (text : Text) =
     let style = text.style
     use font = new Font(style.fontName, float32(style.size))
     let size = bitmapSizeOfText font text.text
-    let bitmapWidth = size.Width |> float |> Math.Ceiling |> int
-    let bitmapHeight = size.Height |> float |> Math.Ceiling |> int
+    let bitmapWidth = size.width |> Math.Ceiling |> int
+    let bitmapHeight = size.height |> float |> Math.Ceiling |> int
     use bitmap = new Bitmap(bitmapWidth, bitmapHeight)
     use graphics = Graphics.FromImage bitmap
     let color = style.color
@@ -53,7 +53,7 @@ let makeTextBoxSurface (text : Text) =
     GL.TexParameter(target, TextureParameterName.TextureMinFilter, TextureMinFilter.Linear |> int)
     GL.TexImage2D(target, 0, PixelInternalFormat.Rgba, bitmapWidth, bitmapHeight, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bytes)
     // let surfaceSize = Size(bitmapWidth |> float32, bitmapHeight |> float32 )
-    { background = { id = texture; width = bitmapWidth; height = bitmapHeight }; size = size ; content = Seq.empty }
+    { background = { id = texture; width = bitmapWidth; height = bitmapHeight }; size = SizeF(size.width |> float32, size.height |> float32) ; content = Seq.empty }
 
 let makeSurface box = 
     brick {

@@ -26,9 +26,37 @@ type Text = { style: TextStyle; text: string }
 // Boxes
 //
 
+type Size = 
+    struct 
+        new (w: float, h: float) = {
+            width = w
+            height = h
+            }
+
+        val public width : float
+        val public height : float
+    end
+
+type Rect =
+    struct
+        new (l: float, t: float, w: float, h: float) = {
+            left = l
+            top = t
+            width = w
+            height = h }
+
+        val public left : float
+        val public top : float
+        val public width : float
+        val public height : float
+
+        member this.bottom = this.top + this.height
+        member this.right = this.left + this.width
+    end
+
 type Box =
     | TextBox of Text
-
+    | Container of (Rect brick * Box brick) ilist
 
 //
 // Window
@@ -54,7 +82,8 @@ let private measureBitmap = new Bitmap(1, 1)
 
 let bitmapSizeOfText font text = 
     use graphics = Graphics.FromImage(measureBitmap)
-    graphics.MeasureString(text, font)
+    let sz = graphics.MeasureString(text, font)
+    Size(sz.Width |> float, sz.Height |> float)
 
 // tbd: need some kind of a font cache, but I would assume that the system takes care of.
 
@@ -65,3 +94,5 @@ let sizeOf b =
     | TextBox t ->
         let font = fontOf t.style
         bitmapSizeOfText font t.text
+    | Container _ ->
+        Size(0.,0.)
