@@ -6,7 +6,7 @@ open BricksUIRuntime
 
 let textStyle = { fontName = "Lucida console"; size = 14.; color = Color.formRGB(1., 1., 1.) }
 
-let lines = Channel.source<string IList.change>()
+let lines = Channel.source (IList.reset IList.empty<string>)
 
 let mkTextBox text = brick {
         return TextBox { style = textStyle; text = text }
@@ -54,4 +54,6 @@ let application = brick {
 }
 
 run application
+
+
 

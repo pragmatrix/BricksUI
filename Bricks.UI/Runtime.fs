@@ -35,3 +35,4 @@ let run (application:Application brick) =
     if windows.Count() = 0 then () else
     let mainWindow = windows.First()
     mainWindow.Run(30.0, 0.0)
+
