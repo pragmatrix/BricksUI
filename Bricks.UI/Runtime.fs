@@ -10,19 +10,20 @@ open OpenTK
 
 let run (application:Application brick) = 
 
-    let windows = application |> convert (fun app -> app.windows)
+    let windows = application |> Value.map (fun app -> app.windows)
 
     let host = ProgramHost<_>()
 
-    let windowMapper w =
-        brick {
-            let! w = w
-            let! sysw = manifest (fun () -> new _Window(w, host))
-            return sysw.update(w)
-        }
-        
-    let systemWindows = windows |> track |> map windowMapper |> materialize
-     
+    let createWindow w = new _Window(w, host)
+    let updateWindow (_w:_Window) w = _w.update w
+    let destroyWindow (_w:_Window) = _w.Dispose()
+
+    let systemWindows = 
+        windows
+        |> BSet.track
+        |> BSet.map (Value.manage createWindow updateWindow destroyWindow)
+        |> BSet.materialize
+
     let rootBrick = brick {
         let! windows = systemWindows
         let! realized = windows

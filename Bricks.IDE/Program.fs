@@ -6,6 +6,9 @@ open BricksUIRuntime
 
 let textStyle = { fontName = "Lucida console"; size = 14.; color = Color.formRGB(1., 1., 1.) }
 
+(*
+
+
 let lines = Channel.source (IList.reset IList.empty<string>)
 
 let mkTextBox text = brick {
@@ -26,14 +29,16 @@ let textContainer = convert Container zipped
 
 // let textContainer = Container <| zip rectangles textBoxes
 
+*)
+
 let helloWorld = brick {
         return TextBox { style = textStyle; text = "Hello World!"}
         }
 
 
-let myWindowVisible = value true
+let myWindowVisible = var true
 
-let myWindow = value {
+let myWindow = var {
     title = "Bricks IDE"; 
     width = 800; height = 600;
     content = helloWorld;
@@ -50,7 +55,7 @@ let allWindows = brick {
 
 let application = brick {
     let! w = allWindows
-    return { Application.windows = w |> ISet.ofSeq }
+    return { Application.windows = ISet.ofSeq w }
 }
 
 run application
